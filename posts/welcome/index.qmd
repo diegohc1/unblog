@@ -1,12 +1,10 @@
 ---
-title: "Welcome To My Blog"
-author: "Tristan O'Malley"
+title: "¿Qué tal?"
+author: "Diego Hermoza"
 date: "2022-12-21"
 categories: [news]
 ---
 
-This is the first post in a Quarto blog. Welcome!
+¡Hola!, después de unos (varios) intentos pude publicar esta página web. Si bien mis conocimientos en CSS o HTML son escasos o nulos, pude aprovechar las bondades de  [*Quarto*](https://quarto.org/docs/websites/website-blog.html) y [Netlify](https://www.netlify.com/). En general, utilizando dichas herramientas, es bastante sencillo e intuitivo generar una página (aunque tengo pendiente seguir explorando las bondades). 
 
-![](thumbnail.jpg)
-
-Since this post doesn't specify an explicit `image`, the first image in the post will be used in the listing page of posts.
+Disfruto aprendiendo sobre el lenguaje de programación R y [compartir dichos aprendizajes](https://www.google.com/search?q=es+poco+pero+es+trabajo+honesto&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjCyrTbjpX5AhXoBLkGHbl_CkcQ_AUoAXoECAIQAw&biw=1536&bih=754&dpr=1.25#imgrc=ImVQF7pomIBRmM). Es por eso que hice este blog, además de compartir otros temas de interés. 
