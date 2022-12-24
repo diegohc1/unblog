@@ -2,14 +2,14 @@ project:
   type: website
 
 website:
-  title: "unblog"
+  title: "Diego Hermoza"
   navbar:
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/
+        href: https://github.com/diegohc1
       - icon: twitter
-        href: https://twitter.com
+        href: https://twitter.com/Dhermoza1
 format:
   html:
     theme: cosmo
