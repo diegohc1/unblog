@@ -12,7 +12,7 @@ website:
         href: https://twitter.com/Dhermoza1
 format:
   html:
-    theme: cosmo
+    theme: sandstone
     css: styles.css
 
 editor: visual

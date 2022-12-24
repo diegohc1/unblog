@@ -1,5 +1,5 @@
 ---
-title: "Diego Hermoza"
+title: "Diego"
 listing:
   contents: posts
   sort: "date desc"
