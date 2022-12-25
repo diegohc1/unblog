@@ -1,14 +1,94 @@
 ---
-title: "Post With Code"
-author: "Harlow Malloc"
+title: "Estimando MCO 'manualmente' en R"
+author: "Diego Hermoza"
 date: "2022-12-24"
-categories: [news, code, analysis]
+categories: [econometrics, R]
 image: "image.jpg"
 draft: true
 ---
 
-This is a post with executable code.
+El método más común para la estimación del modelo de regresión lineal es el de mínimos cuadrados. En esta entrada muestro como construir el estimador de mínimos cuadrados ordinarios paso a paso en R. En realidad, dados los supuestos del modelo clásico de regresión lineal, es un procedimiento bastante sencillo. La fórmula para estimar los parámetros es: $\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y$, donde $X$ contiene las $n$ observaciones de las $k$ variables independientes, y $y$ a las $n$ observaciones de la variable dependiente. Pero... ¿de dónde sale está formula?
 
-```{r}
-1 + 1
+Consideremos el siguiente modelo de regresión:
+
+$$y_i = \beta_0 + \beta_1x_{1i}  + ... + \beta_kx_{ki} + u_i,   i = 1,...,n $$
+
+de manera matricial:
+
+$$y = X\beta + u$$
+
+$$\hat{y} = X\hat{\beta}$$ $$u = y - \hat{y} = y - X\hat{\beta}$$
+
+El problema de minimización consiste en elegir un vector de coeficientes (supongamos) $b$ tal que la suma de cuadrados de los residuales $u_i$ sea el mínimo. De manera matricial:
+
+$$u'u =  (y - Xb)'(y - Xb)$$ $$u'u =  y'y - b'X'y - y'Xb + b'X'Xb$$
+
+$$u'u =  y'y - 2b'X'y - y'Xb + b'X'Xb$$
+
+```{r results = "asis"}
+
+# establecemos los parametros a estimar
+set.seed(1)
+N <- 100
+b0 <- 2 
+b1 <- 3 
+b2 <- 5
+
+# simulamos datos
+x1 <- runif(N) 
+x2 <- runif(N) 
+u <- rnorm(N) 
+
+# generamos y
+y <- b0 + b1*x1 + b2*x2 + u
+
+#m1 <- lm(y ~ x1 + x2) #regresión
+#summary(m1)
+
+# definir la matrix X (variables explicativas)
+X <- as.matrix(cbind(1, x1, x2)) #aumentando un vector de unos
+
+#Estimacion de b = ( (X'X)^(-1) )X'y
+
+# solve() --> genera la inversa de la matriz
+# t()  --> genera la transpuesta de la matriz
+# %*%  --> simbolo para multiplicar matrices
+
+b <- solve( t(X) %*% X) %*% t(X) %*% y
+
+# calcular los residuales / errores e = y-Xb
+e <- y - X %*% b
+colSums(e) #practicamente 0
+
+# numero de observaciones (n) y parametros (k)
+n <- nrow(X);    k <- ncol(X)
+
+# calcular la matriz de varianzas y covarianzas cov = ( 1/(n-k) )e'e(X'X)^(-1)
+#  estimar la varianza de los errores: sigma^2 : s
+# s = ( 1/(n-k) )e'e
+s <- 1/(n-k) * as.numeric(t(e)%*%e) #as.numeric para que sea un valor
+
+#  multiplicar por (X'X)^(-1)
+cov <- s*solve( t(X) %*% X)
+
+# desviaciones estandar de los coeficientes. se = raiz de las diagonales de cov
+se <- sqrt(diag(cov))
+
+# estadisticos t
+t <- (b/se)
+
+# p_value del estadistico t
+p_val <- 2*pt(-abs(t), df = n-k-1)
+
+#Tabla de la regresion
+tabla <- as.data.frame(round(cbind(b, se, t, p_val), 4))
+tabla <- setNames(tabla, c("coef", "se", "t", "pval"))
+knitr::kable(tabla)
+
+
+#con función de R (lm)
+m1 <- lm(y~x1+x2)
+texreg::htmlreg(m1)
+
+
 ```
