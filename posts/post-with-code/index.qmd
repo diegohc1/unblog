@@ -5,80 +5,102 @@ date: "2022-12-24"
 categories: [econometrics, R]
 image: "image.jpg"
 draft: true
+toc: true
 ---
 
-El método más común para la estimación del modelo de regresión lineal es el de mínimos cuadrados. En esta entrada muestro como construir el estimador de mínimos cuadrados ordinarios paso a paso en R. En realidad, dados los supuestos del modelo clásico de regresión lineal, es un procedimiento bastante sencillo. La fórmula para estimar los parámetros es: $\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y$, donde $X$ contiene las $n$ observaciones de las $k$ variables independientes, y $y$ a las $n$ observaciones de la variable dependiente. Pero... ¿de dónde sale está formula?
+El método más común para la estimación del modelo de regresión lineal es el de mínimos cuadrados. En esta entrada muestro como construir el estimador de mínimos cuadrados ordinarios (MCO; OLS, por sus siglas en inglés) paso a paso en R. En realidad, dados los supuestos del modelo clásico de regresión lineal, es un procedimiento bastante sencillo. La fórmula para estimar los parámetros es: $\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y$, donde $X$ contiene las $n$ observaciones de las $k$ variables independientes, y $y$ a las $n$ observaciones de la variable dependiente. Pero... ¿de dónde sale está formula?
+
+## Derivación del estimador de OLS 
 
 Consideremos el siguiente modelo de regresión:
+$$y_i = \beta_0 + \beta_1x_{1i}  + ... + \beta_kx_{ki} + u_i$$ 
 
-$$y_i = \beta_0 + \beta_1x_{1i}  + ... + \beta_kx_{ki} + u_i,   i = 1,...,n $$
+donde $u_i$ es el componente no observado (unobserved) o error. La ecuación de la regresión puede escribirse de manera matricial de la siguiente forma:
 
-de manera matricial:
+$$y = X\beta + u$$ 
 
-$$y = X\beta + u$$
+Definimos $\hat{\beta}$ como el estimador de $\beta$. 
+Por lo tanto, se define la ecuación de regresión muestral:
 
-$$\hat{y} = X\hat{\beta}$$ $$u = y - \hat{y} = y - X\hat{\beta}$$
+$$\hat{y} \equiv X\hat{\beta}$$ 
 
-El problema de minimización consiste en elegir un vector de coeficientes (supongamos) $b$ tal que la suma de cuadrados de los residuales $u_i$ sea el mínimo. De manera matricial:
+Consideremos $e$, la diferencia entre el valor real de $y$ y el valor estimado de $\hat{y}$. En ese sentido:  
 
-$$u'u =  (y - Xb)'(y - Xb)$$ $$u'u =  y'y - b'X'y - y'Xb + b'X'Xb$$
+$$e = y - \hat{y} = y - X\hat{\beta}$$ 
 
-$$u'u =  y'y - 2b'X'y - y'Xb + b'X'Xb$$
+El problema de minimización consiste en elegir un vector de coeficientes $\hat{\beta}$ tal, que la suma de cuadrados de los residuales $e_i$ sea el mínimo. De manera matricial:
+
+$$e'e =  (y - X\hat{\beta})'(y - X\hat{\beta})$$ 
+$$e'e =  y'y - \hat{\beta}'X'y - y'X\hat{\beta} + \hat{\beta}'X'X\hat{\beta}$$
+$$e'e =  y'y - 2\hat{\beta}'X'y + \hat{\beta}'X'X\hat{\beta}$$
+Derivamos respecto a $\hat{\beta}$:
+
+$$\frac{\partial e'e}{\partial \hat{\beta}} = - 2X'y + 2X'X\hat{\beta} = 0$$ 
+$$ X'X\hat{\beta} = X'y$$
+$$\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y $$
+De esta manera obtenemos la estimación puntual $\hat{\beta}$. Generalmente, la pregunta de interés es si el estimador es estadísticamente diferente de $0$.  En ese sentido, debemos evaluar la hipotesís $H_0: \hat{\beta} = 0$. Definimos $V(\hat{\beta} \mid X) \equiv \sigma^{2}D$, donde $D \equiv {(X^{\prime}X)}^{-1}$ y $V(u\mid X) = \sigma^{2}$. Entonces: 
+
+$$\hat{\beta_j}\sim N(\beta_j, \sigma^{2}D_{jj}) $$
+En palabras: la distribución del j-ésimo elemento del vector de estimadores, es normal, centrada en su verdadero valor y en el j-ésimo elemento de la matriz de varianzas y covarianzas. Bajo la $H_0: \hat{\beta} = 0$:
+
+$$z_j \equiv \frac{\hat{\beta_j}}{\sqrt{\sigma^{2}D_{jj}}} \sim N(0, 1)$$
+
+Sin embargo, hay un problema: $\sigma^{2}$ no se puede observar! Por lo tanto, lo reemplazamos por su estimador $S^{2} \equiv e'e/(n-k)$. Este cambio transforma la distribución en la distribución $t$: 
+
+$$t_j \equiv \frac{\hat{\beta_j}}{\sqrt{S^{2}D_{jj}}} \sim t_{n-k}$$
+Si $t_j$ es muy grande, entonces se rechaza $H_0$. Es preciso dar cuenta que esta es la intuición general de la estimación mediante MCO, sin embargo no hemos entrado en los teoremas y supuestos que respaldan cada uno de los pasos mencionados. Para un mayor detalle se puede consultar cualquier libro de econometría :).   
+
+## Calcular OLS en R 
+
+Y bueno, ahora exploremos en R. En primer lugar, establecemos los parámetros a estimar y simulamos los datos. 
 
 ```{r results = "asis"}
-
-# establecemos los parametros a estimar
-set.seed(1)
+# parametros a estimar
 N <- 100
 b0 <- 2 
 b1 <- 3 
 b2 <- 5
+b <- c(b0, b1, b2)
+k <- length(b) #nro de parametros
 
 # simulamos datos
+set.seed(1)
 x1 <- runif(N) 
 x2 <- runif(N) 
-u <- rnorm(N) 
+X <- cbind(1, x1, x2) # vector de 1 para b0
+u <- rnorm(N) # unobserved 
 
 # generamos y
-y <- b0 + b1*x1 + b2*x2 + u
+y <- X%*%b + u 
 
-#m1 <- lm(y ~ x1 + x2) #regresión
-#summary(m1)
+# y <- b0 + b1*x1 + b2*x2 + u #con ecuaciones 
 
-# definir la matrix X (variables explicativas)
-X <- as.matrix(cbind(1, x1, x2)) #aumentando un vector de unos
+```
 
-#Estimacion de b = ( (X'X)^(-1) )X'y
+Construimos el estimador $\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y$ 'manualmente': 
 
-# solve() --> genera la inversa de la matriz
-# t()  --> genera la transpuesta de la matriz
-# %*%  --> simbolo para multiplicar matrices
+```{r results = "asis"}
+# tomar en cuenta: 
+# solve(): devuelve la inversa de la matriz
+# t():  devuelve la transpuesta de la matriz
 
-b <- solve( t(X) %*% X) %*% t(X) %*% y
+bhat <- solve( t(X) %*% X ) %*% t(X) %*% y
 
-# calcular los residuales / errores e = y-Xb
-e <- y - X %*% b
-colSums(e) #practicamente 0
+```
 
-# numero de observaciones (n) y parametros (k)
-n <- nrow(X);    k <- ncol(X)
+Obtención de la varianza $S^{2} = e'e/(n-k)$
+```{r results = "asis"}
+e <- y - X %*% bhat #residuales
+s2 <- 1/(N-k) * as.numeric(t(e)%*%e) #estimador de la varianza
+```
 
-# calcular la matriz de varianzas y covarianzas cov = ( 1/(n-k) )e'e(X'X)^(-1)
-#  estimar la varianza de los errores: sigma^2 : s
-# s = ( 1/(n-k) )e'e
-s <- 1/(n-k) * as.numeric(t(e)%*%e) #as.numeric para que sea un valor
+Calculamos la matriz de varianzas-covarianzas $S^{2}{(X^{\prime}X)}^{-1}$ y luego sus errores estándar (raíz diagonal de la matriz)
 
-#  multiplicar por (X'X)^(-1)
-cov <- s*solve( t(X) %*% X)
-
-# desviaciones estandar de los coeficientes. se = raiz de las diagonales de cov
-se <- sqrt(diag(cov))
-
-# estadisticos t
-t <- (b/se)
-
-# p_value del estadistico t
-p_val <- 2*pt(-abs(t), df = n-k-1)
+```{r results = "asis"}
+cov <- s2*solve(t(X) %*% X)
+se <- sqrt(diag(cov)) # error estandar
+t <- (bhat/se) # estadisticos t
+p_val <- 2*pt(-abs(t), df = N-k-1) # p_value del estadistico t
 
 #Tabla de la regresion
 tabla <- as.data.frame(round(cbind(b, se, t, p_val), 4))
