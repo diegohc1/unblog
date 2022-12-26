@@ -77,7 +77,7 @@ y <- X%*%b + u
 
 ```
 
-Construimos el estimador $\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y$ 'manualmente': 
+Construimos el estimador $\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y$:
 
 ```{r results = "asis"}
 # tomar en cuenta: 
@@ -85,32 +85,55 @@ Construimos el estimador $\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y$ 'manual
 # t():  devuelve la transpuesta de la matriz
 
 bhat <- solve( t(X) %*% X ) %*% t(X) %*% y
-
 ```
 
-Obtención de la varianza $S^{2} = e'e/(n-k)$
+Obtención de la varianza $S^{2} = e'e/(n-k)$:
 ```{r results = "asis"}
 e <- y - X %*% bhat #residuales
 s2 <- 1/(N-k) * as.numeric(t(e)%*%e) #estimador de la varianza
 ```
 
-Calculamos la matriz de varianzas-covarianzas $S^{2}{(X^{\prime}X)}^{-1}$ y luego sus errores estándar (raíz diagonal de la matriz)
+Calculamos la matriz de varianzas-covarianzas $S^{2}{(X^{\prime}X)}^{-1}$ y luego los errores estándar de cada $\hat{\beta_j}$. Esto último, extrayendo la raíz cuadrada de la diagonal de la matriz.
 
 ```{r results = "asis"}
-cov <- s2*solve(t(X) %*% X)
+cov <- s2*solve(t(X) %*% X) # matriz de covarianzas
 se <- sqrt(diag(cov)) # error estandar
+```
+
+Finalmente, calculamos los estadisticos $t$ y valores $p$ asociados. 
+
+```{r results = "asis"}
 t <- (bhat/se) # estadisticos t
 p_val <- 2*pt(-abs(t), df = N-k-1) # p_value del estadistico t
+```
 
-#Tabla de la regresion
-tabla <- as.data.frame(round(cbind(b, se, t, p_val), 4))
+Colocamos todo en una tabla:
+
+```{r results = "asis"}
+library(kableExtra)
+
+# tabla de la regresion
+tabla <- as.data.frame(round(cbind(bhat, se, t, p_val), 4))
 tabla <- setNames(tabla, c("coef", "se", "t", "pval"))
-knitr::kable(tabla)
 
-
-#con función de R (lm)
-m1 <- lm(y~x1+x2)
-texreg::htmlreg(m1)
-
+tabla %>%
+  kbl(caption = "Estimación MCO paso a paso") %>%
+  kable_classic(full_width = F)  
 
 ```
+
+Estimando el modelo con la funcion *lm()* en R:
+
+```{r}
+m1 <- lm(y ~ 1 + x1 + x2)
+summary(m1)
+
+```
+
+Verificamos que los resultados son los mismos. En la práctica, no hay razón para estimar MCO paso a paso porque R viene con las funciones necesarias incorporadas. Sin embargo, el ejercicio nos permite comprender lo que pasa "entre bambalinas".  
+
+## Miscelánea
+
+¿Quien invento el metodo? 
+¿las computadoras hacen el paso a paso? 
+

@@ -124,6 +124,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
@@ -208,6 +211,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#derivación-del-estimador-de-ols" id="toc-derivación-del-estimador-de-ols" class="nav-link active" data-scroll-target="#derivación-del-estimador-de-ols">Derivación del estimador de OLS</a></li>
   <li><a href="#calcular-ols-en-r" id="toc-calcular-ols-en-r" class="nav-link" data-scroll-target="#calcular-ols-en-r">Calcular OLS en R</a></li>
+  <li><a href="#miscelánea" id="toc-miscelánea" class="nav-link" data-scroll-target="#miscelánea">Miscelánea</a></li>
   </ul>
 </nav>
     </div>
@@ -257,162 +261,101 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> X<span class="sc">%*%</span>b <span class="sc">+</span> u </span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># y &lt;- b0 + b1*x1 + b2*x2 + u #con ecuaciones </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Construimos el estimador <span class="math inline">\(\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y\)</span> ‘manualmente’:</p>
+<p>Construimos el estimador <span class="math inline">\(\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y\)</span>:</p>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tomar en cuenta: </span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># solve(): devuelve la inversa de la matriz</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># t():  devuelve la transpuesta de la matriz</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>bhat <span class="ot">&lt;-</span> <span class="fu">solve</span>( <span class="fu">t</span>(X) <span class="sc">%*%</span> X ) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Obtención de la varianza <span class="math inline">\(S^{2} = e'e/(n-k)\)</span></p>
+<p>Obtención de la varianza <span class="math inline">\(S^{2} = e'e/(n-k)\)</span>:</p>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> y <span class="sc">-</span> X <span class="sc">%*%</span> bhat <span class="co">#residuales</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>(N<span class="sc">-</span>k) <span class="sc">*</span> <span class="fu">as.numeric</span>(<span class="fu">t</span>(e)<span class="sc">%*%</span>e) <span class="co">#estimador de la varianza</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Calculamos la matriz de varianzas-covarianzas <span class="math inline">\(S^{2}{(X^{\prime}X)}^{-1}\)</span> y luego sus errores estándar (raíz diagonal de la matriz)</p>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cov <span class="ot">&lt;-</span> s2<span class="sc">*</span><span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(cov)) <span class="co"># error estandar</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> (bhat<span class="sc">/</span>se) <span class="co"># estadisticos t</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>p_val <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fu">abs</span>(t), <span class="at">df =</span> N<span class="sc">-</span>k<span class="dv">-1</span>) <span class="co"># p_value del estadistico t</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Tabla de la regresion</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>tabla <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">round</span>(<span class="fu">cbind</span>(b, se, t, p_val), <span class="dv">4</span>))</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>tabla <span class="ot">&lt;-</span> <span class="fu">setNames</span>(tabla, <span class="fu">c</span>(<span class="st">"coef"</span>, <span class="st">"se"</span>, <span class="st">"t"</span>, <span class="st">"pval"</span>))</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(tabla)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Calculamos la matriz de varianzas-covarianzas <span class="math inline">\(S^{2}{(X^{\prime}X)}^{-1}\)</span> y luego los errores estándar de cada <span class="math inline">\(\hat{\beta_j}\)</span>. Esto último, extrayendo la raíz cuadrada de la diagonal de la matriz.</p>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cov <span class="ot">&lt;-</span> s2<span class="sc">*</span><span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="co"># matriz de covarianzas</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(cov)) <span class="co"># error estandar</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finalmente, calculamos los estadisticos <span class="math inline">\(t\)</span> y valores <span class="math inline">\(p\)</span> asociados.</p>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> (bhat<span class="sc">/</span>se) <span class="co"># estadisticos t</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>p_val <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fu">abs</span>(t), <span class="at">df =</span> N<span class="sc">-</span>k<span class="dv">-1</span>) <span class="co"># p_value del estadistico t</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Colocamos todo en una tabla:</p>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># tabla de la regresion</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>tabla <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">round</span>(<span class="fu">cbind</span>(bhat, se, t, p_val), <span class="dv">4</span>))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>tabla <span class="ot">&lt;-</span> <span class="fu">setNames</span>(tabla, <span class="fu">c</span>(<span class="st">"coef"</span>, <span class="st">"se"</span>, <span class="st">"t"</span>, <span class="st">"pval"</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>tabla <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">caption =</span> <span class="st">"Estimación MCO paso a paso"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>(<span class="at">full_width =</span> F)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">coef</th>
-<th style="text-align: right;">se</th>
-<th style="text-align: right;">t</th>
-<th style="text-align: right;">pval</th>
-</tr>
-</thead>
+
+<table class=" lightable-classic" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>Estimación MCO paso a paso</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> coef </th>
+   <th style="text-align:right;"> se </th>
+   <th style="text-align:right;"> t </th>
+   <th style="text-align:right;"> pval </th>
+  </tr>
+ </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0.2791</td>
-<td style="text-align: right;">7.1333</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">x1</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0.3634</td>
-<td style="text-align: right;">8.0637</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">x2</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">0.3578</td>
-<td style="text-align: right;">14.0148</td>
-<td style="text-align: right;">0</td>
-</tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1.9906 </td>
+   <td style="text-align:right;"> 0.2791 </td>
+   <td style="text-align:right;"> 7.1333 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> x1 </td>
+   <td style="text-align:right;"> 2.9307 </td>
+   <td style="text-align:right;"> 0.3634 </td>
+   <td style="text-align:right;"> 8.0637 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> x2 </td>
+   <td style="text-align:right;"> 5.0144 </td>
+   <td style="text-align:right;"> 0.3578 </td>
+   <td style="text-align:right;"> 14.0148 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
 </tbody>
 </table>
+
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#con función de R (lm)</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x1<span class="sc">+</span>x2)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>texreg<span class="sc">::</span><span class="fu">htmlreg</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Estimando el modelo con la funcion <em>lm()</em> en R:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x1 <span class="sc">+</span> x2)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ 1 + x1 + x2)
 
-<table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
-<caption>
-Statistical models
-</caption>
-<thead>
-<tr>
-<th style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
-</th>
-<th style="padding-left: 5px;padding-right: 5px;">
-Model 1
-</th>
-</tr>
-</thead>
-<tbody>
-<tr style="border-top: 1px solid #000000;">
-<td style="padding-left: 5px;padding-right: 5px;">
-(Intercept)
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-1.99<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-(0.28)
-</td>
-</tr>
-<tr>
-<td style="padding-left: 5px;padding-right: 5px;">
-x1
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-2.93<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-(0.36)
-</td>
-</tr>
-<tr>
-<td style="padding-left: 5px;padding-right: 5px;">
-x2
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-5.01<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-(0.36)
-</td>
-</tr>
-<tr style="border-top: 1px solid #000000;">
-<td style="padding-left: 5px;padding-right: 5px;">
-R<sup>2</sup>
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-0.73
-</td>
-</tr>
-<tr>
-<td style="padding-left: 5px;padding-right: 5px;">
-Adj. R<sup>2</sup>
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-0.73
-</td>
-</tr>
-<tr style="border-bottom: 2px solid #000000;">
-<td style="padding-left: 5px;padding-right: 5px;">
-Num. obs.
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-100
-</td>
-</tr>
-</tbody>
-<tfoot>
-<tr>
-<td style="font-size: 0.8em;" colspan="2">
-<sup>***</sup>p &lt; 0.001; <sup>**</sup>p &lt; 0.01; <sup>*</sup>p &lt; 0.05
-</td>
-</tr>
-</tfoot>
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.8579 -0.6167 -0.1432  0.5352  2.3318 
 
-</table>
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   1.9906     0.2791   7.133 1.77e-10 ***
+x1            2.9307     0.3634   8.064 1.96e-12 ***
+x2            5.0144     0.3578  14.015  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.9675 on 97 degrees of freedom
+Multiple R-squared:  0.7323,    Adjusted R-squared:  0.7268 
+F-statistic: 132.7 on 2 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Verificamos que los resultados son los mismos. En la práctica, no hay razón para estimar MCO paso a paso porque R viene con las funciones necesarias incorporadas. Sin embargo, el ejercicio nos permite comprender lo que pasa “entre bambalinas”.</p>
+</section>
+<section id="miscelánea" class="level2">
+<h2 class="anchored" data-anchor-id="miscelánea">Miscelánea</h2>
+<p>¿Quien invento el metodo? ¿las computadoras hacen el paso a paso?</p>
 
 
 </section>
