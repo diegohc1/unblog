@@ -209,7 +209,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#derivación-del-estimador-de-ols" id="toc-derivación-del-estimador-de-ols" class="nav-link active" data-scroll-target="#derivación-del-estimador-de-ols">Derivación del estimador de OLS</a></li>
+  <li><a href="#derivación-del-estimador-de-ols-e-inferencia" id="toc-derivación-del-estimador-de-ols-e-inferencia" class="nav-link active" data-scroll-target="#derivación-del-estimador-de-ols-e-inferencia">Derivación del estimador de OLS e inferencia</a></li>
   <li><a href="#calcular-ols-en-r" id="toc-calcular-ols-en-r" class="nav-link" data-scroll-target="#calcular-ols-en-r">Calcular OLS en R</a></li>
   <li><a href="#miscelánea" id="toc-miscelánea" class="nav-link" data-scroll-target="#miscelánea">Miscelánea</a></li>
   </ul>
@@ -221,9 +221,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p>El método más común para la estimación del modelo de regresión lineal es el de mínimos cuadrados. En esta entrada muestro como construir el estimador de mínimos cuadrados ordinarios (MCO; OLS, por sus siglas en inglés) paso a paso en R. En realidad, dados los supuestos del modelo clásico de regresión lineal, es un procedimiento bastante sencillo. La fórmula para estimar los parámetros es: <span class="math inline">\(\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y\)</span>, donde <span class="math inline">\(X\)</span> contiene las <span class="math inline">\(n\)</span> observaciones de las <span class="math inline">\(k\)</span> variables independientes, y <span class="math inline">\(y\)</span> a las <span class="math inline">\(n\)</span> observaciones de la variable dependiente. Pero… ¿de dónde sale está formula?</p>
-<section id="derivación-del-estimador-de-ols" class="level2">
-<h2 class="anchored" data-anchor-id="derivación-del-estimador-de-ols">Derivación del estimador de OLS</h2>
+<p>El método más común para la estimación del modelo de regresión lineal es el de mínimos cuadrados. En esta entrada muestro como construir el estimador de mínimos cuadrados ordinarios (MCO; OLS, por sus siglas en inglés) paso a paso en R. En realidad, dados los supuestos del modelo clásico de regresión lineal, es un procedimiento bastante sencillo. La fórmula para estimar los parámetros es: <span class="math inline">\(\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y\)</span>, donde <span class="math inline">\(X\)</span> contiene las <span class="math inline">\(n\)</span> observaciones de las <span class="math inline">\(k\)</span> variables independientes, y <span class="math inline">\(y\)</span> a las <span class="math inline">\(n\)</span> observaciones de la variable dependiente. Pero… ¿de dónde sale está formula? y ¿cómo evaluamos su significancia estadística?</p>
+<section id="derivación-del-estimador-de-ols-e-inferencia" class="level2">
+<h2 class="anchored" data-anchor-id="derivación-del-estimador-de-ols-e-inferencia">Derivación del estimador de OLS e inferencia</h2>
 <p>Consideremos el siguiente modelo de regresión: <span class="math display">\[y_i = \beta_0 + \beta_1x_{1i}  + ... + \beta_kx_{ki} + u_i\]</span></p>
 <p>donde <span class="math inline">\(u_i\)</span> es el componente no observado (unobserved) o error. La ecuación de la regresión puede escribirse de manera matricial de la siguiente forma:</p>
 <p><span class="math display">\[y = X\beta + u\]</span></p>
@@ -355,12 +355,31 @@ F-statistic: 132.7 on 2 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
 </section>
 <section id="miscelánea" class="level2">
 <h2 class="anchored" data-anchor-id="miscelánea">Miscelánea</h2>
-<p>¿Quien invento el metodo? ¿las computadoras hacen el paso a paso?</p>
+<p>El método de mínimos cuadrados es considerado como “el automóvil del análisis estadístico moderno”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Pero de “moderno” tal vez no tiene mucho, fue publicado por primera vez en 1805 por el matemático francés Adrien-Marie Legendre. Sin embargo, el matemático alemán Carl Friedrich Gauss habría estado usando el método desde 1795. Particularmente, Gauss alcanzó mayor notoriedad y popularidad por calcular la órbita de Ceres (un planeta que en ese momento se había descubierto) empleando mínimos cuadrados. El detalle es que Gauss ni difundió ni explicó el método hasta años después. Entonces, Legendre, aunque no fue el primero en utilizar el método, si fue el primero en difundirlo y nombrarlo como se le conoce hoy. Imaginen inventar el método fundamental del análisis de regresión en el marco de predecir donde aparecerá un planeta. Y uno aqui…</p>
+<p>Pero… en realidad los softwares no utilizan <span class="math inline">\({(X^{\prime}X)}^{-1}X^{\prime}y\)</span>. Al parecer, invertir matrices es “numéricamente inestable” y computacionalmente ineficiente<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Por ejemplo, la función <em>lm()</em> realiza una transformación QR (?) para estimar <span class="math inline">\(\hat{\beta}\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>qx <span class="ot">&lt;-</span> <span class="fu">qr</span>(X)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">solve.qr</span>(qx, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       [,1]
+   1.990631
+x1 2.930736
+x2 5.014356</code></pre>
+</div>
+</div>
+<p>Y así, es como puedes empezarle a caer mal al profesor de econometría, ¿por qué tanto énfasis en el método MCO?, ¿por qué tantas demostraciones?, ¿Para que hago este post? Si finalmente es descartado por el software. ¿Quién sabe? Me hubiera encantado saber eso en el pregrado :).</p>
 
 
 </section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Stephen M. Stigler. “Gauss and the Invention of Least Squares.” Ann. Statist. 9 (3) 465 - 474, May, 1981. https://doi.org/10.1214/aos/1176345451<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Sosa, W. (2015) El lado oscuro de la econometría. TEMAS Grupo Editorial, Buenos Aires<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

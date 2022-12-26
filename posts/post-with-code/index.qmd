@@ -8,9 +8,9 @@ draft: true
 toc: true
 ---
 
-El método más común para la estimación del modelo de regresión lineal es el de mínimos cuadrados. En esta entrada muestro como construir el estimador de mínimos cuadrados ordinarios (MCO; OLS, por sus siglas en inglés) paso a paso en R. En realidad, dados los supuestos del modelo clásico de regresión lineal, es un procedimiento bastante sencillo. La fórmula para estimar los parámetros es: $\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y$, donde $X$ contiene las $n$ observaciones de las $k$ variables independientes, y $y$ a las $n$ observaciones de la variable dependiente. Pero... ¿de dónde sale está formula?
+El método más común para la estimación del modelo de regresión lineal es el de mínimos cuadrados. En esta entrada muestro como construir el estimador de mínimos cuadrados ordinarios (MCO; OLS, por sus siglas en inglés) paso a paso en R. En realidad, dados los supuestos del modelo clásico de regresión lineal, es un procedimiento bastante sencillo. La fórmula para estimar los parámetros es: $\hat{\beta} = {(X^{\prime}X)}^{-1}X^{\prime}y$, donde $X$ contiene las $n$ observaciones de las $k$ variables independientes, y $y$ a las $n$ observaciones de la variable dependiente. Pero... ¿de dónde sale está formula? y ¿cómo evaluamos su significancia estadística?
 
-## Derivación del estimador de OLS 
+## Derivación del estimador de OLS e inferencia
 
 Consideremos el siguiente modelo de regresión:
 $$y_i = \beta_0 + \beta_1x_{1i}  + ... + \beta_kx_{ki} + u_i$$ 
@@ -134,6 +134,13 @@ Verificamos que los resultados son los mismos. En la práctica, no hay razón pa
 
 ## Miscelánea
 
-¿Quien invento el metodo? 
-¿las computadoras hacen el paso a paso? 
+El método de mínimos cuadrados es considerado como "el automóvil del análisis estadístico moderno”^[Stephen M. Stigler. "Gauss and the Invention of Least Squares." Ann. Statist. 9 (3) 465 - 474, May, 1981. https://doi.org/10.1214/aos/1176345451]. Pero de “moderno” tal vez no tiene mucho, fue publicado por primera vez en 1805 por el matemático francés Adrien-Marie Legendre. Sin embargo, el matemático alemán Carl Friedrich Gauss habría estado usando el método desde 1795. Particularmente, Gauss alcanzó mayor notoriedad y popularidad por calcular la órbita de Ceres (un planeta que en ese momento se había descubierto) empleando mínimos cuadrados. El detalle es que Gauss ni difundió ni explicó el método hasta años después. Entonces, Legendre, aunque no fue el primero en utilizar el método, si fue el primero en difundirlo y nombrarlo como se le conoce hoy. Imaginen inventar el método fundamental del análisis de regresión en el marco de predecir donde aparecerá un planeta. Y uno aqui...  
+
+Pero... en realidad los softwares no utilizan ${(X^{\prime}X)}^{-1}X^{\prime}y$. Al parecer, invertir matrices es “numéricamente inestable” y computacionalmente ineficiente^[Sosa, W. (2015) El lado oscuro de la econometría. TEMAS Grupo Editorial, Buenos Aires]. Por ejemplo, la función *lm()* realiza una transformación QR (?) para estimar $\hat{\beta}$:
+
+```{r} 
+qx <- qr(X)
+solve.qr(qx, y)
+```
+Y así, es como puedes empezarle a caer mal al profesor de econometría, ¿por qué tanto énfasis en el método MCO?, ¿por qué tantas demostraciones?, ¿Para que hago este post? Si finalmente es descartado por el software. ¿Quién sabe? Me hubiera encantado saber eso en el pregrado :).  
 
