@@ -4,7 +4,7 @@ author: "Diego Hermoza"
 date: "2022-12-24"
 categories: [econometrics, R]
 image: "image.jpg"
-draft: true
+draft: false
 toc: true
 ---
 

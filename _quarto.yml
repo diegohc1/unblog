@@ -3,6 +3,8 @@ project:
 
 website:
   title: "Diego Hermoza"
+  site-url: https://dhermozac.netlify.app/
+  description: "Probando un blog"
   navbar:
     right:
       - about.qmd
@@ -10,6 +12,8 @@ website:
         href: https://github.com/diegohc1
       - icon: twitter
         href: https://twitter.com/Dhermoza1
+      - icon: rss
+        href: index.xml
 format:
   html:
     theme: sandstone
