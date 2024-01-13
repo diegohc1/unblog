@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Diego Hermoza">
-<meta name="dcterms.date" content="2022-12-24">
+<meta name="dcterms.date" content="2024-01-13">
 
 <title>Diego Hermoza - Estimando MCO ‘manualmente’ en R</title>
 <style>
@@ -172,7 +172,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">December 24, 2022</p>
+        <p class="date">January 13, 2024</p>
       </div>
     </div>
     
@@ -262,80 +262,66 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>tabla <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">round</span>(<span class="fu">cbind</span>(bhat, se, t, p_val), <span class="dv">4</span>))</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>tabla <span class="ot">&lt;-</span> <span class="fu">setNames</span>(tabla, <span class="fu">c</span>(<span class="st">"coef"</span>, <span class="st">"se"</span>, <span class="st">"t"</span>, <span class="st">"pval"</span>))</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>tabla <span class="sc">%&gt;%</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">caption =</span> <span class="st">"Estimación MCO paso a paso"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>(<span class="at">full_width =</span> F)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>tabla <span class="sc">|&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">caption =</span> <span class="st">"Estimación paso a paso"</span>, </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">table.attr =</span> <span class="st">'data-quarto-disable-processing="true"'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic_2</span>(<span class="at">full_width =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="lightable-classic table" data-quarto-postprocess="true">
-<caption>Estimación MCO paso a paso</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">coef</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">se</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">t</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">pval</th>
-</tr>
-</thead>
+
+<table data-quarto-disable-processing="true" class=" lightable-classic-2" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>Estimación paso a paso</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> coef </th>
+   <th style="text-align:right;"> se </th>
+   <th style="text-align:right;"> t </th>
+   <th style="text-align:right;"> pval </th>
+  </tr>
+ </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: right;">1.9906</td>
-<td style="text-align: right;">0.2791</td>
-<td style="text-align: right;">7.1333</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">x1</td>
-<td style="text-align: right;">2.9307</td>
-<td style="text-align: right;">0.3634</td>
-<td style="text-align: right;">8.0637</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">x2</td>
-<td style="text-align: right;">5.0144</td>
-<td style="text-align: right;">0.3578</td>
-<td style="text-align: right;">14.0148</td>
-<td style="text-align: right;">0</td>
-</tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1.9906 </td>
+   <td style="text-align:right;"> 0.2791 </td>
+   <td style="text-align:right;"> 7.1333 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> x1 </td>
+   <td style="text-align:right;"> 2.9307 </td>
+   <td style="text-align:right;"> 0.3634 </td>
+   <td style="text-align:right;"> 8.0637 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> x2 </td>
+   <td style="text-align:right;"> 5.0144 </td>
+   <td style="text-align:right;"> 0.3578 </td>
+   <td style="text-align:right;"> 14.0148 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
 </tbody>
 </table>
-
 
 </div>
 <p>Estimando el modelo con la funcion <em>lm()</em> en R:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x1 <span class="sc">+</span> x2)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(m1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = y ~ 1 + x1 + x2)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--1.8579 -0.6167 -0.1432  0.5352  2.3318 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   1.9906     0.2791   7.133 1.77e-10 ***
-x1            2.9307     0.3634   8.064 1.96e-12 ***
-x2            5.0144     0.3578  14.015  &lt; 2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.9675 on 97 degrees of freedom
-Multiple R-squared:  0.7323,    Adjusted R-squared:  0.7268 
-F-statistic: 132.7 on 2 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre><code>            Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept) 1.990631  0.2790628  7.133273 1.771804e-10
+x1          2.930736  0.3634478  8.063705 1.964654e-12
+x2          5.014356  0.3577896 14.014815 4.764111e-25</code></pre>
 </div>
 </div>
 <p>Verificamos que los resultados son los mismos. En la práctica, no hay razón para estimar MCO paso a paso porque R viene con las funciones necesarias incorporadas. Sin embargo, el ejercicio nos permite comprender lo que pasa “entre bambalinas”.</p>
 </section>
 <section id="miscelánea" class="level2">
 <h2 class="anchored" data-anchor-id="miscelánea">Miscelánea</h2>
-<p>El método de mínimos cuadrados es considerado como “el automóvil del análisis estadístico moderno”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Pero de “moderno” tal vez no tiene mucho, fue publicado por primera vez en 1805 por el matemático francés Adrien-Marie Legendre. Sin embargo, el matemático alemán Carl Friedrich Gauss habría estado usando el método desde 1795. Particularmente, Gauss alcanzó mayor notoriedad y popularidad por calcular la órbita de Ceres (un planeta que en ese momento se había descubierto) empleando mínimos cuadrados. El detalle es que Gauss ni difundió ni explicó el método hasta años después. Entonces, Legendre, aunque no fue el primero en utilizar el método, si fue el primero en difundirlo y nombrarlo como se le conoce hoy. Imaginen inventar el método fundamental del análisis de regresión en el marco de predecir donde aparecerá un planeta. Y uno aqui…</p>
-<p>Pero… en realidad los softwares no utilizan <span class="math inline">\({(X^{\prime}X)}^{-1}X^{\prime}y\)</span>. Al parecer, invertir matrices es “numéricamente inestable” y computacionalmente ineficiente<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Por ejemplo, la función <em>lm()</em> realiza una transformación QR (?) para estimar <span class="math inline">\(\hat{\beta}\)</span>:</p>
+<p>El método de mínimos cuadrados es considerado como “el automóvil del análisis estadístico moderno”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Pero de “moderno” tal vez no tiene mucho, fue publicado por primera vez en 1805 por el matemático francés Adrien-Marie Legendre. Sin embargo, el matemático alemán Carl Friedrich Gauss habría estado usando el método desde 1795. Particularmente, Gauss alcanzó mayor notoriedad y popularidad por calcular la órbita de Ceres (un planeta que en ese momento se había descubierto) empleando mínimos cuadrados. El detalle es que Gauss ni difundió ni explicó el método hasta años después. Entonces, Legendre, aunque no fue el primero en utilizar el método, si fue el primero en difundirlo y nombrarlo como se le conoce hoy. Imaginen inventar el método fundamental del análisis de regresión en el marco de predecir donde aparecerá un planeta. Y uno aquí…</p>
+<p>Pero… en realidad los softwares no utilizan <span class="math inline">\({(X^{\prime}X)}^{-1}X^{\prime}y\)</span>. Al parecer, invertir matrices es “numéricamente inestable” y computacionalmente ineficiente<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Por ejemplo, la función <em>lm()</em> realiza una descomposición QR (que?) para estimar <span class="math inline">\(\hat{\beta}\)</span>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>qx <span class="ot">&lt;-</span> <span class="fu">qr</span>(X)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">solve.qr</span>(qx, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -346,7 +332,7 @@ x1 2.930736
 x2 5.014356</code></pre>
 </div>
 </div>
-<p>Y así, es como puedes empezarle a caer mal al profesor de econometría, ¿por qué tanto énfasis en el método MCO?, ¿por qué tantas demostraciones?, ¿Para que hago este post? Si finalmente es descartado por el software. ¿Quién sabe? Me hubiera encantado saber eso en el pregrado :).</p>
+<p>Y así, es como puedes empezarle a caer mal al profesor de econometría, ¿por qué tanto énfasis en el método MCO?, ¿por qué tantas demostraciones?, ¿para que hago este post? Si finalmente es descartado por el software. Quién sabe… Me hubiera encantado saber eso en el pregrado :).</p>
 
 
 </section>

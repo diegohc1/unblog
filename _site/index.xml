@@ -10,7 +10,7 @@
 <atom:link href="https://dhermozac.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
 <description>Probando un blog</description>
 <generator>quarto-1.3.353</generator>
-<lastBuildDate>Sat, 24 Dec 2022 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 13 Jan 2024 05:00:00 GMT</lastBuildDate>
 <item>
   <title>Estimando MCO ‘manualmente’ en R</title>
   <dc:creator>Diego Hermoza</dc:creator>
@@ -270,58 +270,63 @@ font-style: inherit;">"pval"</span>))</span>
 <span id="cb6-6"></span>
 <span id="cb6-7">tabla <span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">%&gt;%</span></span>
+font-style: inherit;">|&gt;</span></span>
 <span id="cb6-8">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">kbl</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">caption =</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Estimación MCO paso a paso"</span>) <span class="sc" style="color: #5E5E5E;
+font-style: inherit;">"Estimación paso a paso"</span>, </span>
+<span id="cb6-9">      <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb6-9">  <span class="fu" style="color: #4758AB;
+font-style: inherit;">table.attr =</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">kable_classic</span>(<span class="at" style="color: #657422;
+font-style: inherit;">'data-quarto-disable-processing="true"'</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">full_width =</span> F)  </span></code></pre></div>
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kable_classic_2</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">full_width =</span> F)</span></code></pre></div>
 <div class="cell-output-display">
-<table class="lightable-classic table" data-quarto-postprocess="true">
-<caption>Estimación MCO paso a paso</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">coef</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">se</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">t</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">pval</th>
-</tr>
-</thead>
+
+<table data-quarto-disable-processing="true" class=" lightable-classic-2" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>Estimación paso a paso</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> coef </th>
+   <th style="text-align:right;"> se </th>
+   <th style="text-align:right;"> t </th>
+   <th style="text-align:right;"> pval </th>
+  </tr>
+ </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: right;">1.9906</td>
-<td style="text-align: right;">0.2791</td>
-<td style="text-align: right;">7.1333</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">x1</td>
-<td style="text-align: right;">2.9307</td>
-<td style="text-align: right;">0.3634</td>
-<td style="text-align: right;">8.0637</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">x2</td>
-<td style="text-align: right;">5.0144</td>
-<td style="text-align: right;">0.3578</td>
-<td style="text-align: right;">14.0148</td>
-<td style="text-align: right;">0</td>
-</tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1.9906 </td>
+   <td style="text-align:right;"> 0.2791 </td>
+   <td style="text-align:right;"> 7.1333 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> x1 </td>
+   <td style="text-align:right;"> 2.9307 </td>
+   <td style="text-align:right;"> 0.3634 </td>
+   <td style="text-align:right;"> 8.0637 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> x2 </td>
+   <td style="text-align:right;"> 5.0144 </td>
+   <td style="text-align:right;"> 0.3578 </td>
+   <td style="text-align:right;"> 14.0148 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
 </tbody>
 </table>
-
 
 </div>
 <p>Estimando el modelo con la funcion <em>lm()</em> en R:</p>
@@ -341,35 +346,22 @@ background-color: null;
 font-style: inherit;">+</span> x2)</span>
 <span id="cb7-2"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">summary</span>(m1)</span></code></pre></div>
+font-style: inherit;">coef</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summary</span>(m1))</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = y ~ 1 + x1 + x2)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--1.8579 -0.6167 -0.1432  0.5352  2.3318 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   1.9906     0.2791   7.133 1.77e-10 ***
-x1            2.9307     0.3634   8.064 1.96e-12 ***
-x2            5.0144     0.3578  14.015  &lt; 2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.9675 on 97 degrees of freedom
-Multiple R-squared:  0.7323,    Adjusted R-squared:  0.7268 
-F-statistic: 132.7 on 2 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre><code>            Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept) 1.990631  0.2790628  7.133273 1.771804e-10
+x1          2.930736  0.3634478  8.063705 1.964654e-12
+x2          5.014356  0.3577896 14.014815 4.764111e-25</code></pre>
 </div>
 </div>
 <p>Verificamos que los resultados son los mismos. En la práctica, no hay razón para estimar MCO paso a paso porque R viene con las funciones necesarias incorporadas. Sin embargo, el ejercicio nos permite comprender lo que pasa “entre bambalinas”.</p>
 </section>
 <section id="miscelánea" class="level2">
 <h2 class="anchored" data-anchor-id="miscelánea">Miscelánea</h2>
-<p>El método de mínimos cuadrados es considerado como “el automóvil del análisis estadístico moderno”<sup>1</sup>. Pero de “moderno” tal vez no tiene mucho, fue publicado por primera vez en 1805 por el matemático francés Adrien-Marie Legendre. Sin embargo, el matemático alemán Carl Friedrich Gauss habría estado usando el método desde 1795. Particularmente, Gauss alcanzó mayor notoriedad y popularidad por calcular la órbita de Ceres (un planeta que en ese momento se había descubierto) empleando mínimos cuadrados. El detalle es que Gauss ni difundió ni explicó el método hasta años después. Entonces, Legendre, aunque no fue el primero en utilizar el método, si fue el primero en difundirlo y nombrarlo como se le conoce hoy. Imaginen inventar el método fundamental del análisis de regresión en el marco de predecir donde aparecerá un planeta. Y uno aqui…</p>
-<p>Pero… en realidad los softwares no utilizan <img src="https://latex.codecogs.com/png.latex?%7B(X%5E%7B%5Cprime%7DX)%7D%5E%7B-1%7DX%5E%7B%5Cprime%7Dy">. Al parecer, invertir matrices es “numéricamente inestable” y computacionalmente ineficiente<sup>2</sup>. Por ejemplo, la función <em>lm()</em> realiza una transformación QR (?) para estimar <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cbeta%7D">:</p>
+<p>El método de mínimos cuadrados es considerado como “el automóvil del análisis estadístico moderno”<sup>1</sup>. Pero de “moderno” tal vez no tiene mucho, fue publicado por primera vez en 1805 por el matemático francés Adrien-Marie Legendre. Sin embargo, el matemático alemán Carl Friedrich Gauss habría estado usando el método desde 1795. Particularmente, Gauss alcanzó mayor notoriedad y popularidad por calcular la órbita de Ceres (un planeta que en ese momento se había descubierto) empleando mínimos cuadrados. El detalle es que Gauss ni difundió ni explicó el método hasta años después. Entonces, Legendre, aunque no fue el primero en utilizar el método, si fue el primero en difundirlo y nombrarlo como se le conoce hoy. Imaginen inventar el método fundamental del análisis de regresión en el marco de predecir donde aparecerá un planeta. Y uno aquí…</p>
+<p>Pero… en realidad los softwares no utilizan <img src="https://latex.codecogs.com/png.latex?%7B(X%5E%7B%5Cprime%7DX)%7D%5E%7B-1%7DX%5E%7B%5Cprime%7Dy">. Al parecer, invertir matrices es “numéricamente inestable” y computacionalmente ineficiente<sup>2</sup>. Por ejemplo, la función <em>lm()</em> realiza una descomposición QR (que?) para estimar <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cbeta%7D">:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">qx <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -386,7 +378,7 @@ x1 2.930736
 x2 5.014356</code></pre>
 </div>
 </div>
-<p>Y así, es como puedes empezarle a caer mal al profesor de econometría, ¿por qué tanto énfasis en el método MCO?, ¿por qué tantas demostraciones?, ¿Para que hago este post? Si finalmente es descartado por el software. ¿Quién sabe? Me hubiera encantado saber eso en el pregrado :).</p>
+<p>Y así, es como puedes empezarle a caer mal al profesor de econometría, ¿por qué tanto énfasis en el método MCO?, ¿por qué tantas demostraciones?, ¿para que hago este post? Si finalmente es descartado por el software. Quién sabe… Me hubiera encantado saber eso en el pregrado :).</p>
 
 
 </section>
@@ -402,8 +394,8 @@ x2 5.014356</code></pre>
   <category>econometrics</category>
   <category>R</category>
   <guid>https://dhermozac.netlify.app/posts/post-with-code/index.html</guid>
-  <pubDate>Sat, 24 Dec 2022 05:00:00 GMT</pubDate>
-  <media:content url="https://dhermozac.netlify.app/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
+  <pubDate>Sat, 13 Jan 2024 05:00:00 GMT</pubDate>
+  <media:content url="https://dhermozac.netlify.app/posts/post-with-code/fig-mco.png" medium="image" type="image/png" height="97" width="144"/>
 </item>
 <item>
   <title>¿Qué tal?</title>
@@ -415,14 +407,14 @@ x2 5.014356</code></pre>
 
 
 <p>¡Hola!, después de unos (varios) intentos pude publicar esta página web. Si bien mis conocimientos en CSS o HTML son escasos o nulos, pude aprovechar las bondades de <a href="https://quarto.org/docs/websites/website-blog.html">Quarto</a> y <a href="https://www.netlify.com/">Netlify</a>. En general, utilizando dichas herramientas, es bastante sencillo e intuitivo generar una página (aunque tengo pendiente seguir explorando las bondades).</p>
-<p>Disfruto aprendiendo sobre el lenguaje de programación R y <a href="https://www.google.com/search?q=es+poco+pero+es+trabajo+honesto&amp;source=lnms&amp;tbm=isch&amp;sa=X&amp;ved=2ahUKEwjCyrTbjpX5AhXoBLkGHbl_CkcQ_AUoAXoECAIQAw&amp;biw=1536&amp;bih=754&amp;dpr=1.25#imgrc=ImVQF7pomIBRmM">compartir dichos aprendizajes</a>. Es por eso que hice este blog, además de compartir otros temas de interés.</p>
+<p>Disfruto aprendiendo sobre el lenguaje de programación R y <a href="https://pe.images.search.yahoo.com/search/images;_ylt=AwrFbES.6qJltusk7Kx7egx.;_ylu=Y29sbwNiZjEEcG9zAzEEdnRpZAMEc2VjA3BpdnM-?p=es+poco+pero+es+trabajo+honesto&amp;fr2=piv-web&amp;type=E211PE714G0&amp;fr=mcafee#id=0&amp;iurl=https%3A%2F%2Fplantillasdememes.com%2Fimg%2Fplantillas%2Fno-es-mucho-pero-es-trabajo-honesto01569991155.jpg&amp;action=click">compartir dichos aprendizajes</a>. Es por eso que hice este blog, además de compartir otros temas de interés.</p>
 
 
 
  ]]></description>
   <category>news</category>
   <guid>https://dhermozac.netlify.app/posts/welcome/index.html</guid>
-  <pubDate>Wed, 21 Dec 2022 05:00:00 GMT</pubDate>
+  <pubDate>Fri, 12 Jan 2024 05:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
