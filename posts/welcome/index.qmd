@@ -1,10 +1,10 @@
 ---
 title: "¿Qué tal?"
 author: "Diego Hermoza"
-date: "2022-12-21"
+date: "2024-12-01"
 categories: [news]
 ---
 
 ¡Hola!, después de unos (varios) intentos pude publicar esta página web. Si bien mis conocimientos en CSS o HTML son escasos o nulos, pude aprovechar las bondades de [Quarto](https://quarto.org/docs/websites/website-blog.html) y [Netlify](https://www.netlify.com/). En general, utilizando dichas herramientas, es bastante sencillo e intuitivo generar una página (aunque tengo pendiente seguir explorando las bondades).
 
-Disfruto aprendiendo sobre el lenguaje de programación R y [compartir dichos aprendizajes](https://www.google.com/search?q=es+poco+pero+es+trabajo+honesto&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjCyrTbjpX5AhXoBLkGHbl_CkcQ_AUoAXoECAIQAw&biw=1536&bih=754&dpr=1.25#imgrc=ImVQF7pomIBRmM). Es por eso que hice este blog, además de compartir otros temas de interés.
+Disfruto aprendiendo sobre el lenguaje de programación R y [compartir dichos aprendizajes](https://pe.images.search.yahoo.com/search/images;_ylt=AwrFbES.6qJltusk7Kx7egx.;_ylu=Y29sbwNiZjEEcG9zAzEEdnRpZAMEc2VjA3BpdnM-?p=es+poco+pero+es+trabajo+honesto&fr2=piv-web&type=E211PE714G0&fr=mcafee#id=0&iurl=https%3A%2F%2Fplantillasdememes.com%2Fimg%2Fplantillas%2Fno-es-mucho-pero-es-trabajo-honesto01569991155.jpg&action=click). Es por eso que hice este blog, además de compartir otros temas de interés.

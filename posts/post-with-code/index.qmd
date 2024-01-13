@@ -1,9 +1,9 @@
 ---
 title: "Estimando MCO 'manualmente' en R"
 author: "Diego Hermoza"
-date: "2022-12-24"
+date: "2024-13-01"
 categories: [econometrics, R]
-image: "image.jpg"
+image: "fig-mco.png"
 draft: false
 toc: true
 ---
@@ -116,8 +116,8 @@ library(kableExtra)
 tabla <- as.data.frame(round(cbind(bhat, se, t, p_val), 4))
 tabla <- setNames(tabla, c("coef", "se", "t", "pval"))
 
-tabla %>%
-  kbl(caption = "Estimación MCO paso a paso") %>%
+tabla |>
+  kbl(caption = "Estimación MCO paso a paso") |>
   kable_classic(full_width = F)  
 
 ```
@@ -136,11 +136,11 @@ Verificamos que los resultados son los mismos. En la práctica, no hay razón pa
 
 El método de mínimos cuadrados es considerado como "el automóvil del análisis estadístico moderno”^[Stephen M. Stigler. "Gauss and the Invention of Least Squares." Ann. Statist. 9 (3) 465 - 474, May, 1981. https://doi.org/10.1214/aos/1176345451]. Pero de “moderno” tal vez no tiene mucho, fue publicado por primera vez en 1805 por el matemático francés Adrien-Marie Legendre. Sin embargo, el matemático alemán Carl Friedrich Gauss habría estado usando el método desde 1795. Particularmente, Gauss alcanzó mayor notoriedad y popularidad por calcular la órbita de Ceres (un planeta que en ese momento se había descubierto) empleando mínimos cuadrados. El detalle es que Gauss ni difundió ni explicó el método hasta años después. Entonces, Legendre, aunque no fue el primero en utilizar el método, si fue el primero en difundirlo y nombrarlo como se le conoce hoy. Imaginen inventar el método fundamental del análisis de regresión en el marco de predecir donde aparecerá un planeta. Y uno aqui...  
 
-Pero... en realidad los softwares no utilizan ${(X^{\prime}X)}^{-1}X^{\prime}y$. Al parecer, invertir matrices es “numéricamente inestable” y computacionalmente ineficiente^[Sosa, W. (2015) El lado oscuro de la econometría. TEMAS Grupo Editorial, Buenos Aires]. Por ejemplo, la función *lm()* realiza una transformación QR (?) para estimar $\hat{\beta}$:
+Pero... en realidad los softwares no utilizan ${(X^{\prime}X)}^{-1}X^{\prime}y$. Al parecer, invertir matrices es “numéricamente inestable” y computacionalmente ineficiente^[Sosa, W. (2015) El lado oscuro de la econometría. TEMAS Grupo Editorial, Buenos Aires]. Por ejemplo, la función *lm()* realiza una descomposición QR (que?) para estimar $\hat{\beta}$:
 
 ```{r} 
 qx <- qr(X)
 solve.qr(qx, y)
 ```
-Y así, es como puedes empezarle a caer mal al profesor de econometría, ¿por qué tanto énfasis en el método MCO?, ¿por qué tantas demostraciones?, ¿Para que hago este post? Si finalmente es descartado por el software. ¿Quién sabe? Me hubiera encantado saber eso en el pregrado :).  
+Y así, es como puedes empezarle a caer mal al profesor de econometría, ¿por qué tanto énfasis en el método MCO?, ¿por qué tantas demostraciones?, ¿Para que hago este post? Si finalmente es descartado por el software. Quién sabe... Me hubiera encantado saber eso en el pregrado :).  
 
